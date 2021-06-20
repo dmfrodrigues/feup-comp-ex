@@ -1,10 +1,7 @@
 LATEXMK=latexmk -synctex=1 -interaction=nonstopmode --shell-escape -pdf #-quiet -silent
 
-OUTFILES=./CA/COMP_resol_CA.pdf \
-		 ./exam/COMP_resol_exam.pdf \
-		 ./PA/COMP_resol_PA.pdf \
-		 ./tests/1/COMP_resol_test1.pdf \
-		 ./TP/COMP_resol_TP.pdf
+OUTFILES=./exam/COMP_resol_exam.pdf \
+		 ./tests/1/COMP_resol_test1.pdf
 
 all: $(OUTFILES)
 
