@@ -24,14 +24,17 @@ jobs:
     - name: Give permission to execute
       run: chmod u+x *.sh
 
-    - name: Make all documents
-      run: make
+    - name: Make exams doc
+      run: make ./exam/COMP_resol_exam.pdf
 
     - name: Upload exam
       uses: actions/upload-artifact@v2
       with:
         name: COMP_resol_exam.pdf
         path: exam/COMP_resol_exam.pdf
+
+    - name: Make test1 doc
+      run: make ./tests/test1/COMP_resol_test1.pdf
 
     - name: Upload test1
       uses: actions/upload-artifact@v2
