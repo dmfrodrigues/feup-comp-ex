@@ -1,0 +1,93 @@
+\documentclass[docid=2020]{comp_test1}
+\begin{document}
+\renewcommand\thesubsubsection{\thesubsection.\arabic{subsubsection}}
+\setcounter{chapter}{2020}
+\exam{2020 Test 1}
+
+% \setcounter{subsection}{3}
+% \question{Problem 4}
+% \questionitem{Item 1}
+% \begin{center}
+% \begin{tabular}{r | c c}
+% 	$\delta_D                 $ & $0          $ & $1      $ \\ \hline
+% 	$\rightarrow \{p        \}$ & $\{p,q    \}$ & $\{p  \}$ \\
+% 	$            \{p,q      \}$ & $\{p,q,r,s\}$ & $\{p,t\}$ \\
+% 	$       ^*\{p,      t\}$ & $\{p,q    \}$ & $\{p  \}$ \\
+% 	$       ^*\{p,q,r,s  \}$ & $\{p,q,r,s\}$ & $\{p,t\}$
+% \end{tabular}
+% \end{center}
+% \setcounter{subsection}{4}
+% \question{Problem 5}
+% \questionitem{Item 1}
+% \begin{enumerate}[label=(\alph*)]
+% 	\item \label{itm:5_1_a} Does not accept $ababababa$
+% 	\item \label{itm:5_1_b} Does not accept $bab$
+% 	\item \label{itm:5_1_correct} Correct answer
+% 	\item Incorrect because of the answers to \ref{itm:5_1_a} and \ref{itm:5_1_b} 
+% \end{enumerate}
+% \questionitem{Item 2}
+% \begin{enumerate}[label=(\alph*)]
+% 	\item \label{itm:5_2_a} Does not accept $baaba$
+% 	\item \label{itm:5_2_b} Does not accept $bab$
+% 	\item \label{itm:5_2_correct} Correct answer
+% 	\item Incorrect because of the answers to \ref{itm:5_2_a} and \ref{itm:5_2_b} 
+% \end{enumerate}
+% \questionitem{Item 3}
+% \begin{enumerate}[label=(\alph*)]
+% 	\item Does not accept $bab$
+% 	\item \label{itm:5_3_correct} Correct answer
+% 	\item Accepts $aab$
+% 	\item Accepts $aab$
+% \end{enumerate}
+% \setcounter{subsection}{5}
+% \question{Problem 6}
+% \setcounter{subsubsection}{4}
+% \questionitem{Item 5}
+% \begin{enumerate}[label=(\alph*)]
+% 	\item Accepts $bb$
+% 	\item Does not accept $b$
+% 	\item Does not accept $\varepsilon$
+% 	\item \label{itm:6_5_correct} Correct answer
+% \end{enumerate}
+% \question{Problem 7}
+% \questionitem{Item 1}
+% \begin{enumerate}[label=(\alph*)]
+% 	\item \label{itm:7_1_correct} (NW) Correct answer
+% 	\item (NE) Does not accept $bbab$
+% 	\item (SW) Does not accept $\varepsilon$
+% 	\item (SE) Does not accept $bbab$
+% \end{enumerate}
+% \question{Problem 8}
+% \questionitem{Item 1}
+% \begin{enumerate}[label=(\alph*)]
+% 	\item \textbf{False}. $\{0^n1^n\mid n \geq 0\} \in L(0^*1^*)$ and the first is not regular.
+% 	\item \textbf{True}. Convert them to DFAs, minimize them and compare.
+% 	\item \textbf{True}. $\{0^n0^n\mid n \geq 0\}=L((00)^*)$.
+% 	\item \textbf{True}. Incoming to $L_1$, $L_2$ are connected to start nodes, outgoing are from all final nodes.
+% 	\begin{center}
+% 		\begin{tikzpicture}[->,>=stealth',node distance=1.3cm,initial text=$ $,]
+% 			\footnotesize
+% 			\node[state, initial](qi) {$q_i$};
+% 			\node[state, above right of=qi](1L1) {$L_1$};
+% 			\node[state, below right of=qi](1L2) {$L_2$};
+% 			\node[state, right of=1L1](2L2) {$L_2$};
+% 			\node[state, right of=1L2](2L1) {$L_1$};
+% 			\node[state, accepting, below right of=2L2](qf) {$q_f$};
+			
+% 			\draw   (qi)	edge[above] node{$\varepsilon$} (1L1)
+% 					(qi)	edge[below] node{$\varepsilon$} (1L2)
+% 					(1L1)	edge[above] node{$\varepsilon$} (2L2)
+% 					(1L2)	edge[above] node{$\varepsilon$} (2L1)
+% 					(2L2)	edge[above] node{$\varepsilon$} (qf)
+% 					(2L1)	edge[below] node{$\varepsilon$} (qf)
+% 					;
+% 		\end{tikzpicture}
+% 	\end{center}
+% 	\item \textbf{False}. $\{0^n1^n\mid n \geq 0\} \cap \{01\} = \{01\}$.
+% 	\item \textbf{False}. $(L(0^*))^*=L(0^*)$.
+% 	\item \textbf{True}. Each state of the DFA retains the parity of $\#a$, $\#b$ and $\#c$, which requires $2^3=8$ states.
+% 	\item \textbf{True}. These are both true because $L(a^*b^*) \subset L((a+b)^*)$.
+% 	\item \textbf{True}. $L((a+b)^*)=\Sigma^*$ so it can be removed. Draw the DFA of $L_1$, negate it and check that it is equivalent to the righthand side.
+% 	\item \textbf{True}. All regular languages may be represented by means of a DFA, NFA, $\varepsilon$-NFA and RE.
+% \end{enumerate}
+\end{document}

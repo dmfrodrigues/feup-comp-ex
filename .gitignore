@@ -1,0 +1,12 @@
+*.aux
+*.log
+*.out
+*.synctex.gz
+*.toc
+COMP_*.pdf
+*.docx
+*.fls
+*.fdb_latexmk
+*.sta
+COMMIT.tex
+.vscode
