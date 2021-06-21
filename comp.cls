@@ -1,8 +1,8 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{comp}
-\LoadClass[a4paper]{book}
+\LoadClass[a4paper, 11pt]{book}
 % Margins
-\RequirePackage[top=35mm,bottom=35mm,left=25mm,right=25mm]{geometry}
+\RequirePackage[top=25mm,bottom=25mm,left=25mm,right=25mm]{geometry}
 % Tables with colored cells
 \RequirePackage[table]{xcolor}%
 % Graphics and images
@@ -24,6 +24,7 @@
 \RequirePackage{listings}
 \renewcommand{\lstlistingname}{File}
 \lstset{
+    basicstyle=\ttfamily,
     frame=tb, % draw frame at top and bottom of the code
     tabsize=4, % tab space width
     numbers=left, % display line numbers on the left
@@ -90,13 +91,23 @@
 \fancyfoot[LE, RO]{\ifx\@@author\@empty\else\@@author\fi}
 % Sections
 \makeatletter
-\renewcommand\thesection{\thechapter\ifnum\c@section>\z@ -\Roman{section}\fi}
-\renewcommand\thesubsection{\thesection\ifnum\c@subsection>\z@ -\arabic{subsection}\fi}
+\renewcommand\thesection{Group \arabic{section}}
+\renewcommand\thesubsection{\arabic{section}.\alph{subsection})}
 \renewcommand\thesubsubsection{\thesubsection\alph{subsubsection}}
 \makeatother
+
+\titlespacing*{\chapter}{0pt}{-45pt}{10pt}
+\titleformat{\subsection}[runin]
+  {\normalfont\large\bfseries}{\thesubsection}{1em}{}
+%
+\newcommand\ansseparator{
+    \noindent\hfil\rule{0.5\textwidth}{.4pt}\hfil
+
+    \vspace{1em}
+}
 % Alias
 \setcounter{secnumdepth}{10}
 \newcommand\exam[1]{\chapter{#1}}
 \newcommand\examgroup[1]{\section{#1}}
-\newcommand\question[1]{\subsection{#1}}
+\newcommand\question[0]{\subsection{}}
 \newcommand\questionitem[1]{\subsubsection{#1}}
