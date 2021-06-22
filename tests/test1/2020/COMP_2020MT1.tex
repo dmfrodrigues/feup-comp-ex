@@ -4,90 +4,328 @@
 \setcounter{chapter}{2020}
 \exam{2020 Test 1}
 
-% \setcounter{subsection}{3}
-% \question{Problem 4}
-% \questionitem{Item 1}
-% \begin{center}
-% \begin{tabular}{r | c c}
-% 	$\delta_D                 $ & $0          $ & $1      $ \\ \hline
-% 	$\rightarrow \{p        \}$ & $\{p,q    \}$ & $\{p  \}$ \\
-% 	$            \{p,q      \}$ & $\{p,q,r,s\}$ & $\{p,t\}$ \\
-% 	$       ^*\{p,      t\}$ & $\{p,q    \}$ & $\{p  \}$ \\
-% 	$       ^*\{p,q,r,s  \}$ & $\{p,q,r,s\}$ & $\{p,t\}$
-% \end{tabular}
-% \end{center}
-% \setcounter{subsection}{4}
-% \question{Problem 5}
-% \questionitem{Item 1}
-% \begin{enumerate}[label=(\alph*)]
-% 	\item \label{itm:5_1_a} Does not accept $ababababa$
-% 	\item \label{itm:5_1_b} Does not accept $bab$
-% 	\item \label{itm:5_1_correct} Correct answer
-% 	\item Incorrect because of the answers to \ref{itm:5_1_a} and \ref{itm:5_1_b} 
-% \end{enumerate}
-% \questionitem{Item 2}
-% \begin{enumerate}[label=(\alph*)]
-% 	\item \label{itm:5_2_a} Does not accept $baaba$
-% 	\item \label{itm:5_2_b} Does not accept $bab$
-% 	\item \label{itm:5_2_correct} Correct answer
-% 	\item Incorrect because of the answers to \ref{itm:5_2_a} and \ref{itm:5_2_b} 
-% \end{enumerate}
-% \questionitem{Item 3}
-% \begin{enumerate}[label=(\alph*)]
-% 	\item Does not accept $bab$
-% 	\item \label{itm:5_3_correct} Correct answer
-% 	\item Accepts $aab$
-% 	\item Accepts $aab$
-% \end{enumerate}
-% \setcounter{subsection}{5}
-% \question{Problem 6}
-% \setcounter{subsubsection}{4}
-% \questionitem{Item 5}
-% \begin{enumerate}[label=(\alph*)]
-% 	\item Accepts $bb$
-% 	\item Does not accept $b$
-% 	\item Does not accept $\varepsilon$
-% 	\item \label{itm:6_5_correct} Correct answer
-% \end{enumerate}
-% \question{Problem 7}
-% \questionitem{Item 1}
-% \begin{enumerate}[label=(\alph*)]
-% 	\item \label{itm:7_1_correct} (NW) Correct answer
-% 	\item (NE) Does not accept $bbab$
-% 	\item (SW) Does not accept $\varepsilon$
-% 	\item (SE) Does not accept $bbab$
-% \end{enumerate}
-% \question{Problem 8}
-% \questionitem{Item 1}
-% \begin{enumerate}[label=(\alph*)]
-% 	\item \textbf{False}. $\{0^n1^n\mid n \geq 0\} \in L(0^*1^*)$ and the first is not regular.
-% 	\item \textbf{True}. Convert them to DFAs, minimize them and compare.
-% 	\item \textbf{True}. $\{0^n0^n\mid n \geq 0\}=L((00)^*)$.
-% 	\item \textbf{True}. Incoming to $L_1$, $L_2$ are connected to start nodes, outgoing are from all final nodes.
-% 	\begin{center}
-% 		\begin{tikzpicture}[->,>=stealth',node distance=1.3cm,initial text=$ $,]
-% 			\footnotesize
-% 			\node[state, initial](qi) {$q_i$};
-% 			\node[state, above right of=qi](1L1) {$L_1$};
-% 			\node[state, below right of=qi](1L2) {$L_2$};
-% 			\node[state, right of=1L1](2L2) {$L_2$};
-% 			\node[state, right of=1L2](2L1) {$L_1$};
-% 			\node[state, accepting, below right of=2L2](qf) {$q_f$};
-			
-% 			\draw   (qi)	edge[above] node{$\varepsilon$} (1L1)
-% 					(qi)	edge[below] node{$\varepsilon$} (1L2)
-% 					(1L1)	edge[above] node{$\varepsilon$} (2L2)
-% 					(1L2)	edge[above] node{$\varepsilon$} (2L1)
-% 					(2L2)	edge[above] node{$\varepsilon$} (qf)
-% 					(2L1)	edge[below] node{$\varepsilon$} (qf)
-% 					;
-% 		\end{tikzpicture}
-% 	\end{center}
-% 	\item \textbf{False}. $\{0^n1^n\mid n \geq 0\} \cap \{01\} = \{01\}$.
-% 	\item \textbf{False}. $(L(0^*))^*=L(0^*)$.
-% 	\item \textbf{True}. Each state of the DFA retains the parity of $\#a$, $\#b$ and $\#c$, which requires $2^3=8$ states.
-% 	\item \textbf{True}. These are both true because $L(a^*b^*) \subset L((a+b)^*)$.
-% 	\item \textbf{True}. $L((a+b)^*)=\Sigma^*$ so it can be removed. Draw the DFA of $L_1$, negate it and check that it is equivalent to the righthand side.
-% 	\item \textbf{True}. All regular languages may be represented by means of a DFA, NFA, $\varepsilon$-NFA and RE.
-% \end{enumerate}
+\examgroup{Lexical and Syntactic Analysis}
+
+The CFG (Context-Free Grammar) G1 below represents a grammar of a simple programming language.
+
+~
+
+\begin{minipage}[t]{0.44\textwidth}
+    Some of the Tokens for G1:
+    
+    \begin{itemize}[wide, noitemsep, label={}]
+        \item \texttt{REG = \$[0-9][0-9]}
+        \item \texttt{IF = if}
+        \item \texttt{GOTO = goto}
+        \item \texttt{CMP = == | < | > | <= | >= | !=}
+        \item \texttt{CONST = [0-9]+}
+        \item \texttt{OP = + | -| * | /}
+        \item \texttt{LABEL= [a-zA-Z][a-zA-Z]*}
+    \end{itemize}
+\end{minipage}
+\begin{minipage}[t]{0.54\textwidth}
+    Grammar G1:
+    
+    \begin{enumerate}[wide, noitemsep]
+        \item \texttt{S → Stmt (Stmt)*}
+        \item \texttt{Stmt → LABEL: | Assign | If| GOTO LABEL;}
+        \item \texttt{Assign → Lhs= Operand (OP Operand)?;}
+        \item \texttt{Operand →REG | CONST | Mem}
+        \item \texttt{If → IF Cond GOTO LABEL}
+        \item \texttt{Cond → Operand CMP Operand }
+        \item \texttt{Lhs → REG| Mem}
+        \item \texttt{Mem → “M["Operand“]”}
+    \end{enumerate}
+\end{minipage}
+
+\question
+Write the chain of the first 10 tokens resultant from the lexical analysis for Code1 below;
+
+\begin{lstlisting}[caption=Code1]
+    $2=0;
+L2:
+    if $2 >= 100 goto L1
+    $3 = 4*$2;
+    $4 = $1+$3;
+    M[$4] = 0;
+    $2 = $2+1;
+    goto L2;
+L1:
+\end{lstlisting}
+
+\ansseparator
+
+\noindent
+\texttt{REG(\$2)}, \texttt{T1(=)}, \texttt{CONST(0)}, \texttt{T2(;)}, \texttt{LABEL(L)}, \texttt{CONST(2)}, \texttt{T3(:)}, \texttt{IF}, \texttt{REG(\$2)}, \texttt{CMP(>=)}
+
+\question
+Give the \textit{First} and \textit{Follow} sets for the grammar variables: \textit{Assign}, \textit{Lhs}, and \textit{If};
+
+\ansseparator
+
+\vspace{-2.0em}
+\begin{alignat*}{5}
+    & First (Assign) &&= \{ \texttt{REG}, \texttt{"M["} \} && ~~~~~~~~~~ && Follow(Assign) &&= \{ \texttt{LABEL}, \texttt{REG}, \texttt{"M["}, \texttt{IF}, \texttt{GOTO} \} \\
+    & First (Lhs)    &&= \{ \texttt{REG}, \texttt{"M["} \} && ~~~~~~~~~~ && Follow(Lhs)    &&= \{ \texttt{"="}                                                            \} \\
+    & First (If)     &&= \{ \texttt{IF}                 \} && ~~~~~~~~~~ && Follow(If)     &&= \{ \texttt{LABEL}, \texttt{REG}, \texttt{"M["}, \texttt{IF}, \texttt{GOTO} \} \\
+\end{alignat*}
+\vspace{-3.0em}
+
+\question
+Show the rows of the table for the parser LL(1) considering only the rows related to variables \textit{Assign}, \textit{Lhs}, and \textit{If}, and the columns with the tokens whose cells are not empty in the considered section of the table;
+
+\ansseparator
+
+\begin{center}
+    \small
+    \begin{tabular}{@{} c | p{44mm} | p{44mm} | p{44mm} @{}}
+        \multirow{2}{*}{NT} & \multicolumn{3}{c}{T} \\ \cline{2-4}
+        & \texttt{REG} & \texttt{"M["} & \texttt{IF} \\ \hline
+        $Assign$ & \texttt{Assign → Lhs = Operand (OP Operand)? ;} & \texttt{Assign → Lhs = Operand (OP Operand)? ;} & \\ \hline
+        $Lhs$ & \texttt{Lhs → REG} & \texttt{Lhs → Mem} & \\ \hline
+        $If$ & & & \texttt{If → IF Cond GOTO LABEL}
+    \end{tabular}
+\end{center}
+
+\question
+Based on the section of the parser table you presented before, could you conclude that grammar G1 is not LL(1)? Why?
+
+\ansseparator
+
+\noindent
+No. Quite the contrary: because each cell only has one production we can state that these three variables do not cause conflicts. Thus, we cannot state, based on these results, that the grammar is not LL(1) (although it might actually not be LL(1), we just don't have enough evidence).
+
+\question
+Show the function, considering the grammar rule of line 5 (i.e., for variable \textit{If}), and the respective pseudocode to implement it (considering only the syntax check and not the creation of the syntax tree), as a top-down recursive LL parser and considering the value of lookahead required for this grammar rule. Assume the existence of the lexical analyzer, which outputs the sequence of tokens, of the global variable \textit{token}, and of the function \textit{next()}, which returns the next token in the sequence of tokens (in the beginning the variable \textit{token} identifies the first token in the sequence);
+
+\ansseparator
+
+\begin{lstlisting}
+If(){
+    if(token != IF) return false;
+    token = next();
+    if(!Cond()) return false;
+    if(token != GOTO) return false;
+    token = next();
+    if(token != LABEL) return false;
+    token = next();
+    return true;
+}
+\end{lstlisting}
+
+\newpage
+
+\examgroup{AST, Symbol Table and High-Level Representation}
+
+Consider the function presented in Code2 based on the C programming language:
+
+\begin{lstlisting}[language=c++, caption=Code2]
+void normize(float A[100], double sum) {
+    int i;
+    for(i=0; i < 100; i++)
+        A[i] = A[i]/sum;
+}
+\end{lstlisting}
+
+\question
+Draw a possible AST for Code2;
+
+\ansseparator
+
+\vspace{-2em}
+\begin{center}
+    \begin{tikzpicture}
+        \Tree	[.Start
+                    [.Function
+                        void
+                        normize
+                        [.Args
+                            [.ArrayDecl
+                                float
+                                A
+                                100
+                            ]
+                            [.Decl
+                                double
+                                sum
+                            ]
+                        ]
+                        [.Body
+                            [.Decl
+                                i
+                                0
+                            ]
+                            [.For
+                                [.=
+                                    i
+                                    0
+                                ]
+                                [.{$<$}
+                                    i
+                                    100
+                                ]
+                                [.++
+                                    i
+                                ]
+                                [.=
+                                    [.ArrayEl
+                                        A
+                                        i
+                                    ]
+                                    [./
+                                        [.ArrayEl
+                                            A
+                                            i
+                                        ]
+                                        sum
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+    \end{tikzpicture}
+\end{center}
+
+\question
+Draw a possible high-level representation based on the expression trees presented in the lectures of the compiler course and symbol table for the function;
+
+\ansseparator
+
+\vspace{-1em}
+\begin{center}
+    \begin{tikzpicture}
+        \Tree	[.for
+                    [.{stl i}
+                        0
+                    ]
+                    [.{$<$}
+                        {ldl i}
+                        100
+                    ]
+                    [.{stl i}
+                        [.+
+                            {ldl i}
+                            1
+                        ]
+                    ]
+                    [.sta
+                        {ldp A}
+                        {ldl i}
+                        [./
+                            [.lda
+                                {ldp A}
+                                {ldl i}
+                            ]
+                            {ldp sum}
+                        ]
+                    ]
+                ]
+    \end{tikzpicture}
+\end{center}
+
+\question
+Draw a possible symbol table for the function considering that the language only considers a single local scope;
+
+\ansseparator
+
+\begin{center}
+    \begin{tikzpicture}[every node/.style={align=center},level distance=7em]
+        \Tree	[.{
+                    Functions \\[0.5em]
+                    \begin{tabular}{| c |}
+                        \hline
+                        ... \\ \hline
+                        normize \\ \hline
+                        ... \\ \hline
+                    \end{tabular}
+                }
+                    {
+                        Return \\
+                        void
+                        \vspace{1em}
+                    }
+                    {
+                        Params \\[0.5em]
+                        \begin{tabular}{| l |}
+                            \hline
+                            A (type: float[]; size: 100) \\ \hline
+                            sum (type: double) \\ \hline
+                        \end{tabular}
+                    }
+                    {
+                        Locals \\[0.5em]
+                        \begin{tabular}{| l |}
+                            \hline
+                            i (type: int) \\ \hline
+                        \end{tabular}
+                        \vspace{0.2em}
+                    }
+                ]
+    \end{tikzpicture}
+\end{center}
+
+\question
+Draw a possible high-level representation, based on the expression trees presented in the lectures of the compiler course, and after semantic analysis;
+
+\ansseparator
+
+\vspace{-1em}
+\begin{center}
+    \begin{tikzpicture}
+        \Tree	[.for
+                    [.{stl i}
+                        0
+                    ]
+                    [.{$<$}
+                        {ldl i}
+                        100
+                    ]
+                    [.{stl i}
+                        [.+
+                            {ldl i}
+                            1
+                        ]
+                    ]
+                    [.sta
+                        {ldp A}
+                        {ldl i}
+                        [.d2f
+                            [./
+                                [.f2d
+                                    [.lda
+                                        {ldp A}
+                                        {ldl i}
+                                    ]
+                                ]
+                                {ldp sum}
+                            ]
+                        ]
+                    ]
+                ]
+    \end{tikzpicture}
+\end{center}
+
+\examgroup{Comment the sentences below and justify why you consider each one true or false}
+
+\question
+The semantic rules of a programming language are typically expressed in the grammar of the language used to build the frontend of the compiler.
+
+\ansseparator
+
+\noindent
+False. The grammar of the language usually only represents the syntactic structure of the language, because the construction of an intuitive language often implies that some parts of the language specification cannot be enforced using only a grammar, because these specifications are related to the meaning (semantics) of the program (type checking).
+
+\question
+Given any context-free grammar, it is impossible to generate the AST (Abstract Syntax Tree) without generating first the CST (Concrete Syntax Tree). 
+
+\ansseparator
+
+\noindent
+False. If the original, intuitive grammar is ambiguous, we need to disambiguate the language, obtain the CST and then convert it to an AST. However, if the original grammar happens to be non-ambiguous we can obtain the CST and AST (which are the same in this case) directly from the original grammar.
+
+Also, most parsers directly generate the AST instead of the CST, as we can guide the construction of the ST in a way that makes it not a CST but an AST.
+
+
+
 \end{document}
