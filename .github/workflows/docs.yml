@@ -40,4 +40,13 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: COMP_resol_test1.pdf
-        path: tests/1/COMP_resol_test1.pdf
+        path: tests/test1/COMP_resol_test1.pdf
+
+    - name: Make test2 doc
+      run: make ./tests/test2/COMP_resol_test2.pdf
+
+    - name: Upload test2
+      uses: actions/upload-artifact@v2
+      with:
+        name: COMP_resol_test2.pdf
+        path: tests/test2/COMP_resol_test2.pdf
