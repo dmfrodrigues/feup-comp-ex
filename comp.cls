@@ -5,6 +5,7 @@
 \RequirePackage[top=25mm,bottom=25mm,left=25mm,right=25mm]{geometry}
 % Tables with colored cells
 \RequirePackage[table]{xcolor}%
+\RequirePackage{multirow}
 % Graphics and images
 \RequirePackage{graphicx}
 \RequirePackage{tikz}
@@ -19,12 +20,13 @@
 \RequirePackage{hyperref}
 % Section pagebreaks
 \RequirePackage{titlesec}
-\newcommand{\sectionbreak}{\clearpage}
+% \newcommand{\sectionbreak}{\clearpage}
 % Source code
 \RequirePackage{listings}
 \renewcommand{\lstlistingname}{File}
 \lstset{
     basicstyle=\ttfamily,
+    basewidth=0.5em,
     frame=tb, % draw frame at top and bottom of the code
     tabsize=4, % tab space width
     numbers=left, % display line numbers on the left
@@ -86,7 +88,7 @@
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
 \fancyhead[RE]{\MakeUppercase{\leftmark}}
-\fancyhead[LO]{\textit{\rightmark}}
+% \fancyhead[LO]{\textit{\rightmark}}
 \fancyhead[LE, RO]{\thepage}
 \fancyfoot[LE, RO]{\ifx\@@author\@empty\else\@@author\fi}
 % Sections
@@ -103,7 +105,7 @@
 \newcommand\ansseparator{
     \noindent\hfil\rule{0.5\textwidth}{.4pt}\hfil
 
-    \vspace{1em}
+    \vspace{0.6em}
 }
 % Alias
 \setcounter{secnumdepth}{10}
