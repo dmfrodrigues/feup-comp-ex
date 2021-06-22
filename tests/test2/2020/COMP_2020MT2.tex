@@ -1,0 +1,428 @@
+\documentclass[docid=2020]{comp_test2}
+\begin{document}
+\renewcommand\thesubsubsection{\thesubsection.\arabic{subsubsection}}
+\setcounter{chapter}{2020}
+\exam{2020 Test 2}
+
+\examgroup{Low-Level Intermediate Representation (LLIR) and Instruction Selection}
+
+\begin{lstlisting}[language=c++, caption=Code1]
+for(i=0; i<100; i++)
+    A[i] = A[i]/sum
+\end{lstlisting}
+
+\noindent
+\begin{minipage}[t]{0.45\textwidth}
+    \begin{center}
+        \begin{tabular}{| l | p{28mm} | p{24mm} |}
+            \hline
+            \textbf{Var} & \textbf{Type} & \textbf{Storage} \\ \hline
+            A & int32 A[100] (1D array of 32-bit integers) & Base address of A in the stack at SP+8 \\ \hline
+            i & int (32-bit scalar variable) & register r3 \\ \hline
+            sum & int (32-bit scalar variable) & register r1 \\ \hline
+        \end{tabular}
+    \end{center}
+\end{minipage}
+\begin{minipage}[t]{0.539\textwidth}
+    \small
+    \begin{center}
+        \begin{tabular}{| l | l |}
+            \hline
+            \textbf{Instruction} & \textbf{Operation} \\ \hline
+            \texttt{load Ri, Rj, C    } & \texttt{Ri → Mem[Rj+C]          } \\ \hline
+            \texttt{store Rj, C, Ri   } & \texttt{Mem[Rj+C] → Ri          } \\ \hline
+            \texttt{add Ri, Rj, Rk    } & \texttt{Ri → Rj + Rk            } \\ \hline
+            \texttt{addi Ri, Rj, C    } & \texttt{Ri → Rj + C             } \\ \hline
+            \texttt{mul Ri, Rj, Rk    } & \texttt{Ri → Rj * Rk            } \\ \hline
+            \texttt{div Ri, Rj, Rk    } & \texttt{Ri → Rj /Rk             } \\ \hline
+            \texttt{lth Ri, Rj, label1} & \texttt{If(Ri < Rj) goto label1 } \\ \hline
+            \texttt{gte Ri, Rj, label1} & \texttt{If(Ri >= Rj) goto label1} \\ \hline
+            \texttt{jump label1       } & \texttt{goto label1             } \\ \hline
+        \end{tabular}
+    \end{center}
+\end{minipage}
+
+\question
+Indicate the LLIR for the section of the code in the example Code1based on the LLIR presented in the lectures of the course, which is based on expression trees, and the type and storage of the variables given by the table below.
+
+\ansseparator
+
+\vspace{-1em}
+\begin{center}
+    \begin{tikzpicture}[->,>=stealth',node distance=1.2cm,initial text=$ $,]
+        \node[                  ] at (-3.5,+2.5)     (q0)  {str};
+        \node[below left of=q0	]               (q01) {r3};
+        \node[below right of=q0	]               (q02) {0};
+
+        \node[                  ] at (-6.5, 0)    (q1)  {cbr};
+        \node[below of=q1       ]               (q10) {$<$};
+        \node[below left of=q10 ]               (q11) {r3};
+        \node[below right of=q10]               (q12) {100};
+
+        \node[                  ] at (-0.25, 0)     (q2)  {st 0};
+        \node[below left of=q2  ] at (-1.5, 0)  (q20) {+};
+        \node[below right of=q2 ] at (+1.0, 0)  (q21) {/};
+        \node[below left of=q20 ] at (-3, -1)   (q22) {ld};
+        \node[below right of=q20] at (-2, -1)   (q23) {*};
+        \node[below left of=q22 ]               (q24) {sp};
+        \node[below right of=q22]               (q25) {8};
+        \node[below left of=q23 ]               (q26) {r3};
+        \node[below right of=q23]               (q27) {4};
+        \node[below left of=q21 ]               (q28) {ld 0};
+        \node[below right of=q21]               (q29) {r1};
+        \node[below of=q28      ]               (q210){+};
+        \node[below left of=q210] at (+0.5, -3.5)  (q211) {ld};
+        \node[below right of=q210] at (+1.5, -3.5) (q212) {*};
+        \node[below left of=q211]                  (q213) {sp};
+        \node[below right of=q211]                 (q214) {8};
+        \node[below left of=q212]                  (q215) {r3};
+        \node[below right of=q212]                 (q216) {4};
+        
+        \node[                  ] at (+4.5, 0)  (q3)  {str};
+        \node[below left of=q3  ]               (q30) {r1};
+        \node[below right of=q3 ]               (q31) {+};
+        \node[below left of=q31 ]               (q32) {r1};
+        \node[below right of=q31]               (q33) {1};
+
+        \node[left of=q1        ]  at (-7.5, 0)  (q4) {...};
+
+        \draw[line width=1.5pt]	
+                
+                (q0)	edge[bend right=45	    ] (q1)
+
+                (q1)	edge[below				] node{yes} (q2)
+                (q1)	edge[above              ] node{no} (q4)
+
+                (q2)	edge[above				] (q3)
+
+                (q3)	edge[bend right=20,above	] (q1)
+                ;
+
+        \draw[-]
+                (q0)	edge[] (q01)
+                (q0)	edge[] (q02)
+                (q1)	edge[] (q10)
+                (q10)	edge[] (q11)
+                (q10)	edge[] (q12)
+                (q2)    edge[] (q20)
+                (q2)    edge[] (q21)
+                (q20)   edge[] (q22)
+                (q20)   edge[] (q23)
+                (q22)   edge[] (q24)
+                (q22)   edge[] (q25)
+                (q23)   edge[] (q26)
+                (q23)   edge[] (q27)
+                (q21)   edge[] (q28)
+                (q21)   edge[] (q29)
+                (q28)   edge[] (q210)
+                (q210)  edge[] (q211)
+                (q210)  edge[] (q212)
+                (q211)  edge[] (q213)
+                (q211)  edge[] (q214)
+                (q212)  edge[] (q215)
+                (q212)  edge[] (q216)
+                (q3)    edge[] (q30)
+                (q3)    edge[] (q31)
+                (q31)    edge[] (q32)
+                (q31)    edge[] (q33)
+                ;
+    \end{tikzpicture}
+\end{center}
+
+\question
+Consider a target machine with 32 32-bit registers (R0 stores 0) including the instructions presented in the table below, where \texttt{Ri}, \texttt{Rk}, and \texttt{Rj} represent registers of the machine (from \texttt{R0} to \texttt{R31}), \texttt{C} represents a 16-bit signed integer constant, and label1 represents a label identifying the target instruction of the jump. Using the Maximal Munch algorithm,present the instruction selection for the LLIR presented in 1.a) when targeting the machine of 1.b) (it is enough to draw in the LLIR the group of nodes for each selected instruction).
+
+\ansseparator
+
+\vspace{-1em}
+\begin{center}
+    \begin{tikzpicture}[->,>=stealth',node distance=1.2cm,initial text=$ $,]
+        \node[                  ] at (-3.5,+2.5)     (q0)  {str};
+        \node[below left of=q0	]               (q01) {r3};
+        \node[below right of=q0	]               (q02) {0};
+
+        \node[                  ] at (-6.5, 0)    (q1)  {cbr};
+        \node[below of=q1       ]               (q10) {$<$};
+        \node[below left of=q10 ]               (q11) {r3};
+        \node[below right of=q10]               (q12) {100};
+
+        \node[state, dashed     ] at (-0.25, 0) (q2)  {st 0};
+        \node[state, dashed, below left of=q2  ] at (-1.5, 0)  (q20) {+};
+        \node[below right of=q2 ] at (+1.0, 0)  (q21) {/};
+        \node[below left of=q20 ] at (-3, -1)   (q22) {ld};
+        \node[below right of=q20] at (-2, -1)   (q23) {*};
+        \node[below left of=q22 ]               (q24) {sp};
+        \node[below right of=q22]               (q25) {8};
+        \node[below left of=q23 ]               (q26) {r3};
+        \node[state, dashed, below right of=q23]               (q27) {4};
+        \node[state, dashed, below left of=q21 ]               (q28) {ld 0};
+        \node[below right of=q21]               (q29) {r1};
+        \node[state, dashed, below of=q28      ]               (q210){+};
+        \node[below left of=q210] at (+0.5, -3.5)  (q211) {ld};
+        \node[below right of=q210] at (+1.5, -3.5) (q212) {*};
+        \node[below left of=q211]                  (q213) {sp};
+        \node[below right of=q211]                 (q214) {8};
+        \node[below left of=q212]                  (q215) {r3};
+        \node[state, dashed, below right of=q212]                 (q216) {4};
+        
+        \node[                  ] at (+4.5, 0)  (q3)  {str};
+        \node[below left of=q3  ]               (q30) {r1};
+        \node[below right of=q3 ]               (q31) {+};
+        \node[below left of=q31 ]               (q32) {r1};
+        \node[below right of=q31]               (q33) {1};
+
+        \node[left of=q1        ]  at (-7.5, 0)  (q4) {...};
+
+        \node[] at (-2.0,+2.5) {\texttt{addi}};
+        \node[] at (-6.5,-3.0) {\texttt{gte}};
+        \node[] at (-3.85,-3.5) {\texttt{load}};
+        \node[] at (-0.3,+0.8) {\texttt{store}};
+        \node[] at (-1.3,-0.9) {\texttt{add}};
+        \node[] at (-2.0,-3.6) {\texttt{mul}};
+        \node[] at (-0.5,-3.5) {\texttt{addi}};
+        \node[] at (-0.3,-6.0) {\texttt{load}};
+        \node[] at (+1.5,-6.0) {\texttt{mul}};
+        \node[] at (+3.2,-6.0) {\texttt{addi}};
+        \node[] at (+2.1,-2.9) {\texttt{add}};
+        \node[] at (+0.0,-1.2) {\texttt{load}};
+        \node[] at (+3.0,-2.6) {\texttt{div}};
+        \node[] at (+5.0,-2.6) {\texttt{addi}};
+
+        \draw[line width=1.5pt]	
+                
+                (q0)	edge[bend right=45	    ] (q1)
+
+                (q1)	edge[below				] node{yes} (q2)
+                (q1)	edge[above              ] node{no} (q4)
+
+                (q2)	edge[above				] (q3)
+
+                (q3)	edge[bend right=20,above	] (q1)
+                ;
+
+        \draw[-]
+                (q0)	edge[] (q01)
+                (q0)	edge[] (q02)
+                (q1)	edge[] (q10)
+                (q10)	edge[] (q11)
+                (q10)	edge[] (q12)
+                (q2)    edge[] (q20)
+                (q2)    edge[] (q21)
+                (q20)   edge[] (q22)
+                (q20)   edge[] (q23)
+                (q22)   edge[] (q24)
+                (q22)   edge[] (q25)
+                (q23)   edge[] (q26)
+                (q23)   edge[] (q27)
+                (q21)   edge[] (q28)
+                (q21)   edge[] (q29)
+                (q28)   edge[] (q210)
+                (q210)  edge[] (q211)
+                (q210)  edge[] (q212)
+                (q211)  edge[] (q213)
+                (q211)  edge[] (q214)
+                (q212)  edge[] (q215)
+                (q212)  edge[] (q216)
+                (q3)    edge[] (q30)
+                (q3)    edge[] (q31)
+                (q31)    edge[] (q32)
+                (q31)    edge[] (q33)
+                ;
+
+        \draw [rounded corners=6mm, dashed] (-3.5,+3.3) -- ++(+1.6, -2.1) -- ++(-3.2,0) -- cycle;
+        \draw [rounded corners=6mm, dashed] (-6.5,+0.8) -- ++(+1.6, -3.4) -- ++(-3.2,0) -- cycle;
+        \draw [rounded corners=6mm, dashed] (-3.85,-1) -- ++(+1.6, -2.1) -- ++(-3.2,0) -- cycle;
+        \draw [rounded corners=6mm, dashed] (-0.40,-3.5) -- ++(+1.6, -2.1) -- ++(-3.2,0) -- cycle;
+        \draw [rounded corners=4mm, dashed] (+4.5,+0.8) -- ++(-1.7, -1.7) -- ++(+1.3,-1.3) -- ++(+2.2, 0) -- ++(+0.6, +0.5) -- cycle;
+        \draw [rounded corners=5mm, dashed] (-1.2,-1.1) -- ++(-1.5, -1.7) -- ++(+0.7,-0.6) -- ++(+1.5, +1.7) -- cycle;
+        \draw [rounded corners=5mm, dashed] (+2.3,-3.6) -- ++(-1.5, -1.7) -- ++(+0.7,-0.6) -- ++(+1.5, +1.7) -- cycle;
+        \draw [rounded corners=5mm, dashed] (+1.8,-0.1) -- ++(+1.5, -1.7) -- ++(-0.7,-0.6) -- ++(-1.5, +1.7) -- cycle;
+    \end{tikzpicture}
+\end{center}
+\vspace{-2em}
+
+\examgroup{Scheduling and Register Allocation}
+
+\begin{minipage}{0.45\textwidth}
+    $\text{Live-in} =\{a,b\}$
+
+    \begin{lstlisting}[caption=Code2]
+t1 := a*a
+t2 := a*b
+t3 := 2;
+t4 := t3*t2
+t5 := t1+t4
+t6 := b*b
+t7 := t5+t6
+    \end{lstlisting}
+
+    $\text{Live-out} = \{t7\}$
+\end{minipage} \hspace{3em}
+\begin{minipage}{0.45\textwidth}
+    \begin{lstlisting}[caption=Code3]
+mul R1, R8, R8
+mul R2,R8, R9
+addi R3, R0, 2
+mul R4, R3,R2
+add R5, R1, R4
+mul R6, R9, R9
+add R7,R5, R6
+    \end{lstlisting}
+\end{minipage}
+
+\question
+By only inspecting the code, present the interference graph for Code2, which would result from liveness analysis. 
+
+\ansseparator
+
+\noindent
+\begin{minipage}{0.58\textwidth}
+    \begin{tabular}{c | l}
+        $\top$  & variable was assigned for 1st time;\\ \hline
+        $\vert$ & variable is alive;\\ \hline
+        $\bot$  & variable is read for last time.
+    \end{tabular}
+
+\begin{center}
+    \begin{tabular}{l | c c c c c c c c c}
+                            & a       & b       & t1       & t2       & t3       & t4       & t5       & t6       & t7       \\ \hline
+        \texttt{t1 = a*a  } & $\vert$ & $\vert$ & $\top$   &          &          &          &          &          &          \\ \hline
+        \texttt{t2 = a*b  } & $\bot$  & $\vert$ & $\vert$  & $\top$   &          &          &          &          &          \\ \hline
+        \texttt{t3 = 2    } &         & $\vert$ & $\vert$  & $\vert$  & $\top$   &          &          &          &          \\ \hline
+        \texttt{t4 = t3*t2} &         & $\vert$ & $\vert$  & $\bot$   & $\bot$   & $\top$   &          &          &          \\ \hline
+        \texttt{t5 = t1+t4} &         & $\vert$ & $\bot$   &          &          & $\bot$   & $\top$   &          &          \\ \hline
+        \texttt{t6 = b*b  } &         & $\bot$  &          &          &          &          & $\vert$  & $\top$   &          \\ \hline
+        \texttt{t7 = t5+t6} &         &         &          &          &          &          & $\bot$   & $\bot$   & $\top$   
+    \end{tabular}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.41\textwidth}
+\begin{center}
+    \footnotesize
+    \begin{tikzpicture}[->,>=stealth',node distance=1.2cm,initial text=$ $,]
+        \node[state] (a)  {a};
+        \node[state, right of=a] (t2) {t2};
+        \node[state, right of=t2] (t3) {t3};
+        \node[state, below right of=t3] (b)  {b};
+        \node[state, above right of=t3] (t1) {t1};
+        \node[state, above right of=b] (t4) {t4};
+        \node[state, right of=t4] (t5) {t5};
+        \node[state, below of=t5] (t6) {t6};
+        \node[state, below of=t6] (t7) {t7};
+        
+        \draw[-]	
+                
+                (a)	    edge[bend right=16] (b)
+                (a)	    edge[bend left=16] (t1)
+                (b)	    edge[] (t1)
+                (b)	    edge[] (t2)
+                (b)	    edge[] (t3)
+                (b)	    edge[] (t4)
+                (b)	    edge[] (t5)
+                (t1)    edge[] (t2)
+                (t1)    edge[] (t3)
+                (t1)    edge[] (t4)
+                (t1)    edge[] (t5)
+                (t2)    edge[] (t3)
+                (t5)    edge[] (t6)
+                ;
+
+    \end{tikzpicture}
+\end{center}
+\end{minipage}
+
+\question
+Consider the interference graph (IG) of 2.a). Indicate a possible allocation of registers using the graph coloring based register allocation algorithm presented in the course lectures and considering a maximum of 3 registers (R1, R2, and R3). Show the content of the stack immediately after the simplification of the IG. In the case of needing to perform spilling, use the degree of each node to decide.
+
+\ansseparator
+
+\noindent
+\begin{minipage}{0.25\textwidth}
+\begin{center}
+    \begin{tabular}{| c |}
+        \textbf{Stack top} \\ \cline{1-1}
+        t3 \\
+        t2 \\
+        t1 \\
+        b (may spill) \\
+        t4 \\
+        a \\
+        t5 \\
+        t6 \\
+        t7 \\ \cline{1-1}
+        \textbf{Stack bottom}
+    \end{tabular}
+\end{center}
+\end{minipage}
+\begin{minipage}{0.74\textwidth}
+    R1 = \{t3, t4, a, t5, t7\} \\
+    R2 = \{t2, t6\} \\
+    R3 = \{t1\}
+\end{minipage}
+
+\question
+Considering that in the target machine all instructions execute in 1 clock cycle and the machine has one unit for load/store instructions and two units for the other instructions, present the scheduling of instructions resultant of applying the list-scheduling algorithm to the example in Code3. Present the data-dependence graph and the criterion to order the instructions ready for scheduling.
+
+\ansseparator
+
+The dependency graph (with height in parenthesis) is:
+
+\begin{center}
+    \begin{tikzpicture}[->,>=stealth',node distance=2.0cm,initial text=$ $,]
+        \node[state                   ] (i7)  {i7}; \node[right= 0em of i7] (i7d) {(1)};
+        \node[state, above right of=i7] (i6)  {i6}; \node[right= 0em of i6] (i6d) {(2)};
+        \node[state, above left  of=i7] (i5)  {i5}; \node[right= 0em of i5] (i5d) {(2)};
+        \node[state, above right of=i5] (i4)  {i4}; \node[right= 0em of i4] (i4d) {(3)};
+        \node[state, above right of=i4] (i3)  {i3}; \node[right= 0em of i3] (i3d) {(4)};
+        \node[state, above left  of=i4] (i2)  {i2}; \node[right= 0em of i2] (i2d) {(4)};
+        \node[state, above left  of=i5] (i1)  {i1}; \node[right= 0em of i1] (i1d) {(3)};
+        
+        \draw	   
+                (i5)	    edge[right] node{1} (i7)
+                (i6)	    edge[left ] node{1} (i7)
+                (i1)	    edge[right] node{1} (i5)
+                (i4)	    edge[left ] node{1} (i5)
+                (i2)	    edge[right] node{1} (i4)
+                (i3)	    edge[left ] node{1} (i4)
+                ;
+
+    \end{tikzpicture}
+\end{center}
+
+Instructions ready for scheduling are ordered in decreasing order of height, and in case of a tie the instruction appearing first in code also appears first for processing.
+
+\begin{center}
+    \begin{tabular}{c || c | c | c}
+        \textbf{Cycle} & \textbf{Load/store} & \textbf{Others} & \textbf{Others} \\ \hline
+        1              &                     & i2              & i3              \\
+        2              &                     & i1              & i4              \\
+        3              &                     & i5              & i6              \\
+        4              &                     & i7              &                
+    \end{tabular}
+\end{center}
+
+\examgroup{Comment the sentences below and justify why you consider each one true or false}
+
+\question
+It does not matter if you do register allocation before or after scheduling as in any way the code generated will be similar.
+
+\ansseparator
+
+\noindent
+False. Code generated with scheduling first or register allocation first is remarkably different.
+
+If scheduling is performed first then it might increase the live range of variables, implying more registers are required and more spills may have to be introduced.
+
+If register allocation is performed first, it may limit possibilities to reorder instructions due to false dependencies that are introduced with the reuse of registers.
+
+Most modern compilers perform scheduling and allocation simultaneously to reach the fastest equilibrium.
+
+\question
+When doing dataflow analysis for liveness analysis, we do not consider array variables as it is impossible to determine their liveness analysis using the dataflow analysis considered in the compiler course. 
+
+\ansseparator
+
+\noindent
+False. If the size of the array is known on compile time, then array elements can be considered as regular variables. Even if the array size is not known on compile time (i.e., if it is stored in the heap), the array elements will nevertheless be operated on, so these variables can't be simply ignored, and array elements (and the array as a whole) must be considered and can be considered.
+
+\end{document}
