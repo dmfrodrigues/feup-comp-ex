@@ -80,12 +80,153 @@ The list of possible items is:
     \item \texttt{S' → S$\cdot$\$}
     \item \texttt{S → $\cdot$w}
     \item \texttt{S → w$\cdot$}
-    \item \texttt{C → $\varepsilon$}
+    \item \texttt{C → $\varepsilon\cdot$}
     \item \texttt{C → $\cdot$SxC}
     \item \texttt{C → S$\cdot$xC}
     \item \texttt{C → Sx$\cdot$C}
     \item \texttt{C → SxC$\cdot$}
 \end{itemize}
 \end{minipage}
+
+\vspace{-1em}
+\begin{center}
+    \begin{tikzpicture}[->,>=stealth',node distance=3cm,initial text=$ $,]
+        \node[draw, align=left                   ] (s0) {
+            $s_0$:\\
+            \texttt{S' → $\cdot$S\$} \\
+            \texttt{S~ → $\cdot$w} \\
+            \texttt{S~ → $\cdot$aCb}
+        };
+        \node[draw, align=left, right of=s0      ] (s1) {
+            $s_1$:\\
+            \texttt{S' → S$\cdot$\$}
+        };
+        \node[draw, align=left, below of=s1      ] (s2) {
+            $s_2$:\\
+            \texttt{S → w$\cdot$}
+        };
+        \node[draw, align=left, below of=s0      ] (s3) {
+            $s_3$:\\
+            \texttt{S → a$\cdot$Cb} \\
+            \texttt{S → $\cdot$w} \\
+            \texttt{S → $\cdot$aCb} \\
+            \texttt{C → $\varepsilon\cdot$} \\
+            \texttt{C → $\cdot$SxC}
+        };
+        \node[draw, align=left, below of=s3      ] (s6) {
+            $s_6$:\\
+            \texttt{S → aCb$\cdot$}
+        };
+        \node[draw, align=left, left of=s6      ] (s4) {
+            $s_4$:\\
+            \texttt{S → aC$\cdot$b}
+        };
+        \node[draw, align=left, below of=s4      ] (s5) {
+            $s_5$:\\
+            \texttt{S → aCb$\cdot$}
+        };
+        \node[draw, align=left, right of=s6      ] (s7) {
+            $s_7$:\\
+            \texttt{S → $\cdot$aCb}\\
+            \texttt{S → $\cdot$w}\\
+            \texttt{C → Sx$\cdot$C}\\
+            \texttt{C → $\varepsilon\cdot$}\\
+            \texttt{C → $\cdot$SxC}
+        };
+        \node[draw, align=left, right of=s7      ] (s8) {
+            $s_8$:\\
+            \texttt{C → SxC$\cdot$}
+        };
+        
+
+        \draw
+                (s0)	edge[above] node{S} (s1)
+                (s0)	edge[above] node{w} (s2)
+                (s0)	edge[left ] node{a} (s3)
+
+                (s3)	edge[loop left, looseness=5] node{a} (s3)
+                (s3)	edge[above] node{w} (s2)
+                (s3)	edge[above] node{c} (s4)
+                (s3)	edge[left] node{S} (s6)
+                
+                (s4)	edge[left] node{b} (s5)
+
+                (s6)	edge[above, bend left=8] node{x} (s7)
+                
+                (s7)	edge[above] node{a} (s3)
+                (s7)	edge[below, bend left=8] node{S} (s6)
+                (s7)	edge[right] node{w} (s2)
+                
+                (s7)	edge[above] node{C} (s8)
+                
+                ;
+    \end{tikzpicture}
+\end{center}
+
+\question
+Is the grammar LR(0)? Justify your answer indicating the LR(0) parsing table corresponding to the automaton;
+
+\ansseparator
+
+\begin{center}
+    \begin{tabular}{c || l | l | l | l | l | l | l}
+              & a & b & w & x & \$ & S & C \\ \hline\hline
+        $s_0$ & shift $s_3$ &   & shift $s_2$ &   &    & goto $s_1$ &   \\ \hline
+        $s_1$ & & & & & accept & \\ \hline
+        $s_2$ & reduce 2 & reduce 2 & reduce 2 & reduce 2 & reduce 2 &   &   \\ \hline
+        $s_3$ & \begin{tabular}{@{}l@{}}shift $s_3$\\reduce 4\end{tabular} & reduce 4 & \begin{tabular}{@{}l@{}}shift $s_2$\\reduce 4\end{tabular} & reduce 4 & reduce 4 & goto $s_6$ & goto $s_4$ \\ \hline
+        $s_4$ &   & shift $s_5$ &   &   &    &   &   \\ \hline
+        $s_5$ & reduce 3 & reduce 3 & reduce 3 & reduce 3 & reduce 3  &   &   \\ \hline
+        $s_6$ &   &   &   & shift $s_7$ &  &   &   \\ \hline
+        $s_7$ & \begin{tabular}{@{}l@{}}shift $s_3$\\reduce 4\end{tabular} & reduce 4 & \begin{tabular}{@{}l@{}}shift $s_2$\\reduce 4\end{tabular} & reduce 4 & reduce 4 & shift $s_6$ & shift $s_8$ \\ \hline
+        $s_8$ & reduce 5 & reduce 5 & reduce 5 & reduce 5 & reduce 5 &   &  
+    \end{tabular}
+\end{center}
+
+The grammar is not LR(0), because it has four reduce/shift conflicts in its parsing table, mainly caused by production \texttt{C → $\varepsilon$}.
+
+\question
+Explain in which circumstances a value of k > 1 can make a non LL(1) CFG into an LL(k) CFG.
+If needed, give examples to support your explanations.
+
+\ansseparator
+
+If a grammar is strictly LL(k) ($k>1$) then it is not LL(i), $i < k$, meaning it is not LL(1). For instance, the grammar
+
+\begin{enumerate}[wide, noitemsep]
+    \item \texttt{S → ab}
+    \item \texttt{S → ac}
+\end{enumerate}
+
+\noindent
+is not LL(1), because analysing the first token is not enough to disambiguate it; however, if we read the second token we can then decide which production to use (if we see \texttt{b}, we apply \texttt{S → ab}; if we see \texttt{c}, we apply \texttt{S → ac}).
+
+\examgroup{}
+
+TODO
+
+\examgroup{}
+
+\question
+Comment the following sentence: ``The
+only way to achieve a high-level representation
+with trees representing expressions according
+to the rules of precedence of the operations of
+the input language is to have the grammar of
+the language taking care of the precedence
+rules.''
+
+\ansseparator
+
+\noindent
+False. One can obtain the high-level representation with trees by obtaining the AST, and the AST can be directly obtained if the parser makes certain provisions/corrections to prevent some nodes from being added to the tree.
+
+\examgroup{}
+
+TODO
+
+\examgroup{}
+
+TODO
 
 \end{document}
