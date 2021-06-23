@@ -20,8 +20,6 @@
 
 % Macros
 \renewcommand\thechapter{\decimal{chapter}T1}
-\usepackage{titlesec}
-\titleformat{\chapter}[display]{\normalfont\bfseries}{}{0pt}{\Huge}
 \makeatletter
 \let\newtitle\@title
 \renewcommand{\chaptermark}[1]{\markboth{\newtitle}{\thechapter. #1}}

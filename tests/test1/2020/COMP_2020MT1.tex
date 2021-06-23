@@ -1,6 +1,5 @@
 \documentclass[docid=2020]{comp_test1}
 \begin{document}
-\renewcommand\thesubsubsection{\thesubsection.\arabic{subsubsection}}
 \setcounter{chapter}{2020}
 \exam{2020 Test 1}
 
@@ -30,7 +29,7 @@ The CFG (Context-Free Grammar) G1 below represents a grammar of a simple program
         \item \texttt{S → Stmt (Stmt)*}
         \item \texttt{Stmt → LABEL: | Assign | If| GOTO LABEL;}
         \item \texttt{Assign → Lhs= Operand (OP Operand)?;}
-        \item \texttt{Operand →REG | CONST | Mem}
+        \item \texttt{Operand → REG | CONST | Mem}
         \item \texttt{If → IF Cond GOTO LABEL}
         \item \texttt{Cond → Operand CMP Operand }
         \item \texttt{Lhs → REG| Mem}

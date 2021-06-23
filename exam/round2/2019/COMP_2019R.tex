@@ -1,0 +1,91 @@
+\documentclass[docid=2019]{comp_exam_round2}
+\begin{document}
+\setcounter{chapter}{2018}
+\exam{Exam 2019}
+
+\examgroup{}
+
+Considering the G1 grammar below (parentheses and numbers on the right identify the productions):
+
+\begin{center}
+    \begin{minipage}{0.15\textwidth}
+        Grammar G1:
+
+        \begin{enumerate}[wide, noitemsep]
+            \setcounter{enumi}{1}
+            \item \texttt{S → w}
+            \item \texttt{S → a C b}
+            \item \texttt{C → $\varepsilon$}
+            \item \texttt{C → S x C}
+        \end{enumerate}
+    \end{minipage}
+\end{center}
+
+\question
+Indicate the First and Follow sets for the grammar variables;
+
+\ansseparator
+
+\vspace{-2.0em}
+\begin{alignat*}{5}
+    & First(S) &&= \{ w, a              \} && ~~~~~~~~~~ && Follow(S) &&= \{ \$, x \} \\
+    & First(C) &&= \{ \varepsilon, w, a \} && ~~~~~~~~~~ && Follow(C) &&= \{ b     \}
+\end{alignat*}
+\vspace{-3.0em}
+
+\question
+Show the LL(1) parsing table. Is the grammar LL(1)?
+
+\ansseparator
+
+\begin{center}
+    \small
+    \begin{tabular}{@{} c | p{30mm} | p{30mm} | p{30mm} | p{30mm} @{}}
+        \multirow{2}{*}{NT} & \multicolumn{3}{c}{T} \\ \cline{2-5}
+            & $w$ & $a$ & $b$ & $x$ \\ \hline
+        $S$ & \texttt{S → w}     & \texttt{S → a C b} & \\ \hline
+        $C$ & \texttt{C → S x C} & \texttt{C → S x C} & \texttt{C → $\varepsilon$}
+    \end{tabular}
+\end{center}
+
+The grammar is LL(1) because no cell in the parsing table has more than one production.
+
+\question
+Is the grammar ambiguous? Justify your answer;
+
+\ansseparator
+
+\noindent
+The grammar is unambiguous, because that follows directly from the fact it is a LL(k) grammar with finite $k=1$.
+
+\question
+Determine and show the LR(0) automaton (consider that for the LR parser, S' is the new start variable and the production 1. \texttt{S' → S \$} is added to the grammar);
+
+\ansseparator
+
+\begin{minipage}[t]{0.49\textwidth}
+The grammar is:
+\begin{enumerate}[wide, noitemsep]
+    \item \texttt{S' → S \$}
+    \item \texttt{S → w}
+    \item \texttt{S → a C b}
+    \item \texttt{C → $\varepsilon$}
+    \item \texttt{C → S x C}
+\end{enumerate}
+\end{minipage}
+\begin{minipage}[t]{0.49\textwidth}
+The list of possible items is:
+\begin{itemize}[wide, noitemsep]
+    \item \texttt{S' → $\cdot$S\$}
+    \item \texttt{S' → S$\cdot$\$}
+    \item \texttt{S → $\cdot$w}
+    \item \texttt{S → w$\cdot$}
+    \item \texttt{C → $\varepsilon$}
+    \item \texttt{C → $\cdot$SxC}
+    \item \texttt{C → S$\cdot$xC}
+    \item \texttt{C → Sx$\cdot$C}
+    \item \texttt{C → SxC$\cdot$}
+\end{itemize}
+\end{minipage}
+
+\end{document}

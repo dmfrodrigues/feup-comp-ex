@@ -101,6 +101,7 @@
 \titlespacing*{\chapter}{0pt}{-45pt}{10pt}
 \titleformat{\subsection}[runin]
   {\normalfont\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\chapter}[display]{\normalfont\bfseries}{}{0pt}{\Huge}
 %
 \newcommand\ansseparator{
     \noindent\hfil\rule{0.5\textwidth}{.4pt}\hfil
