@@ -16,7 +16,7 @@
 \RequirePackage{hyperref}
 
 \author{Diogo Miguel Ferreira Rodrigues \\ \href{mailto:dmfrodrigues2000@gmail.com}{dmfrodrigues2000@gmail.com}}
-\title{COMP - Exam \docid (second round)}
+\title{COMP -- Exam \docid~(second round)}
 
 % Macros
 \renewcommand\thechapter{\decimal{chapter}R}

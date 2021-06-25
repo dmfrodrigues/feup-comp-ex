@@ -5,7 +5,7 @@
 
 \examgroup{}
 
-Considering the G1 grammar below (parentheses and numbers on the right identify the productions):
+Considering the G1 grammar below (numbers on the left identify the productions):
 
 \begin{center}
     \begin{minipage}{0.15\textwidth}
@@ -38,6 +38,7 @@ Show the LL(1) parsing table. Is the grammar LL(1)?
 
 \ansseparator
 
+\vspace{-1em}
 \begin{center}
     \small
     \begin{tabular}{@{} c | p{30mm} | p{30mm} | p{30mm} | p{30mm} @{}}
@@ -186,7 +187,7 @@ Is the grammar LR(0)? Justify your answer indicating the LR(0) parsing table cor
 The grammar is not LR(0), because it has four reduce/shift conflicts in its parsing table, mainly caused by production \texttt{C → $\varepsilon$}.
 
 \question
-Explain in which circumstances a value of k > 1 can make a non LL(1) CFG into an LL(k) CFG.
+Explain in which circumstances a value of $k > 1$ can make a non LL(1) CFG into an LL(k) CFG.
 If needed, give examples to support your explanations.
 
 \ansseparator
@@ -203,18 +204,98 @@ is not LL(1), because analysing the first token is not enough to disambiguate it
 
 \examgroup{}
 
-TODO
+Consider the G2 grammar below.
+
+~
+
+\noindent
+\begin{minipage}[t]{0.41\textwidth}
+    Some of the Tokens for G2:
+    
+    \begin{itemize}[wide, noitemsep, label={}]
+        \item \texttt{IDENT= [a-zA-Z][0-9a-zA-Z]*}
+        \item \texttt{WHILE = while}
+        \item \texttt{ENDWHILE = endwhile}
+        \item \texttt{DO = do}
+        \item \texttt{IF = if}
+        \item \texttt{ELSE = else}
+        \item \texttt{THEN=then}
+        \item \texttt{ENDIF = endif}
+        \item \texttt{CMP = == | < | > | <= | >= | !=}
+        \item \texttt{CONST = [0-9]+}
+        \item \texttt{OP = + | -| * | /}
+    \end{itemize}
+\end{minipage}
+\begin{minipage}[t]{0.58\textwidth}
+    Grammar G2:
+    
+    \begin{enumerate}[wide, noitemsep]
+        \item \texttt{S → (Stmt)*}
+        \item \texttt{Stmt → While | Assign | If}
+        \item \texttt{While → WHILE Cond DO (Stmt)* ENDWHILE}
+        \item \texttt{Assign → Lhs = Operand (OP Operand)?;}
+        \item \texttt{Operand → IDENT | CONST | ArrayAcc}
+        \item \texttt{If → IF Cond THEN Stmt (ELSE Stmt)? ENDIF}
+        \item \texttt{Cond → Operand CMP Operand}
+        \item \texttt{Lhs → IDENT | ArrayAcc}
+        \item \texttt{ArrayAcc → IDENT "[" Index "]" | IDENT "[]"}
+        \item \texttt{Index → IDENT | CONST}
+    \end{enumerate}
+\end{minipage}
+
+\question
+Indicate extensions to the grammar to allow typical FOR...ENDFOR and DO...WHILE loops;
+
+\ansseparator
+
+\begin{itemize}[wide, noitemsep, label={}]
+    \item \texttt{FOR=for}
+    \item \texttt{ENDFOR = endfor}
+    \item \texttt{DOWHILE = do}
+    \item \texttt{ENDDOWHILE = while}
+\end{itemize}
+
+\begin{enumerate}[wide, noitemsep]
+    \setcounter{enumi}{1}
+    \item \texttt{Stmt → While | Assign | If | For | DoWhile} (2.1, 2.2, 2.3, 2.4, 2.5)
+    \setcounter{enumi}{10}
+    \item \texttt{For → FOR "(" Assign ";" Cond ";" Assign ")" (Stmt)* ENDFOR}
+    \item \texttt{DoWhile → DOWHILE (Stmt)* ENDDOWHILE Cond ";"}
+\end{enumerate}
+
+\question
+Analyze if those extensions contribute to a non LL(1) grammar and/or to an ambiguous grammar: if not, justify your answer, and if so change the new productions in order to avoid that.
+
+\ansseparator
+
+\vspace{-2.0em}
+\begin{alignat*}{5}
+    & First (While)   &&= \{ \texttt{WHILE}                                                                  \} \\
+    & First (Assign)  &&= \{ \texttt{IDENT}                                                                  \} \\
+    & First (If)      &&= \{ \texttt{IF}                                                                     \} \\
+    & First (For)     &&= \{ \texttt{FOR}                                                                    \} \\
+    & First (DoWhile) &&= \{ \texttt{DOWHILE}                                                                \} \\
+\end{alignat*}
+
+\vspace{-3.0em}
+
+\begin{center}
+    \small
+    \begin{tabular}{@{} c | p{16mm} | p{16mm} | p{16mm}  | p{16mm}  | p{16mm}  | p{16mm}  | p{16mm} @{}}
+        \multirow{2}{*}{NT} & \multicolumn{7}{c}{T} \\ \cline{2-8}
+                  & \texttt{WHILE} & \texttt{IDENT} & \texttt{IF} & \texttt{FOR} & \texttt{DOWHILE} & \texttt{"("} & \$ \\ \hline
+        $Stmt$    & 2.1            & 2.2            & 2.3         & 2.4          & 2.5              &              &    \\ \hline
+        $For$     &                &                &             & 11           &                  &              &    \\ \hline
+        $DoWhile$ &                &                &             &              & 12               &              &    \\
+    \end{tabular}
+\end{center}
+
+Because no cell has more than one production, these extensions do not contribute to a non LL(1) grammar. If they don't contribute to a non LL(1) grammar, then they don't contribute to an ambiguous grammar either.
 
 \examgroup{}
 
 \question
-Comment the following sentence: ``The
-only way to achieve a high-level representation
-with trees representing expressions according
-to the rules of precedence of the operations of
-the input language is to have the grammar of
-the language taking care of the precedence
-rules.''
+Comment the following sentence: ``The only way to achieve a high-level representation with trees representing expressions according to the rules of precedence of the operations of the input language is to have the grammar of the language taking care of the precedence rules.''
 
 \ansseparator
 
@@ -223,10 +304,306 @@ False. One can obtain the high-level representation with trees by obtaining the 
 
 \examgroup{}
 
-TODO
+\question
+Indicate a low-level intermediate representation (LLIR) for the section of the code in the example below (where N represents a 32-bit int constant) based on expression trees, but considering the processor with instruction set presented below, and the type and storage of the variables given by the following table.
+
+\begin{center}
+\begin{minipage}{0.4\textwidth}
+    $in=\{\}$
+\begin{lstlisting}[escapeinside=||, mathescape=true]
+i = 0;
+m = A[0];|\Suppressnumber|
+do {|\Reactivatenumber|$\lstresetnumber\setcounter{lstnumber}{2}$
+    i=i+1;
+    x = A[i];
+    if (x > m) 
+        m = x;
+} while(i<N);
+\end{lstlisting}
+    $out = \{m\}$
+\end{minipage}
+\end{center}
+
+\ansseparator
+
+\vspace{-1em}
+\begin{center}
+    \begin{tikzpicture}[
+        -,
+        >=stealth',
+        node distance=2.4cm,
+        level distance=1.0cm,
+        sibling distance=1.1cm,
+        initial text=$ $,
+    ]
+        \node (s0) {str}
+            child {node {r2}}
+            child {node {0}}
+        ;
+        \node[below left=6em of s0] (s1) {st 8}
+            child {node {sp}}
+            child {node {ld 4}
+                child {node {sp}}
+            }
+        ;
+        \node[right of=s1] (s2) {str}
+            child {node {r2}}
+            child {node {+}
+                child {node {r2}}
+                child {node {1}}
+            }
+        ;
+        \node[right of=s2] (s3) {str}
+            child {node {r1}}
+            child {node {ld 4}
+                child {node {+}
+                    child {node {sp}}
+                    child {node {r2}}
+                }
+            }
+        ;
+        \node[right of=s3] (s4) {cbr}
+            child {node {$>$}
+                child {node {ldr r1}}
+                child {node {ld 8}
+                    child {node {sp}}
+                }
+            }
+        ;
+        \node[below right of=s4] (s5) {st 8}
+            child {node {ldr r1}}
+        ;
+        \node[above right of=s5] (s6) {cbr}
+            child {node {$<$}
+                child {node {ldr r2}}
+                child {node {ldp 1}}
+            }
+        ;
+        \node[right=3em of s6] (s7) {...};
+
+        \draw[->, line width=1.5pt]
+                (s0)	edge[bend right=45]    (s1)
+                (s1)	edge    (s2)
+                (s2)	edge    (s3)
+                (s3)	edge    (s4)
+                (s4)	edge[above right] node{yes}    (s5)
+                (s4)	edge[above left] node{no}    (s6)
+                (s5)	edge    (s6)
+                (s6)    edge[above, bend right=20] node{yes} (s2)
+                (s6)	edge[above] node{no}    (s7)
+                ;
+    \end{tikzpicture}
+\end{center}
+
+\question
+Considering that a new version of the processor includes an instruction able to implement the code in lines 5 and 6, show the pattern that can be used by the instruction selection algorithm (e.g., Maximal Munch) in order to have the option to associate that instruction to the CFG representation of those lines of code.
+
+\ansseparator
+
+\vspace{-1em}
+\begin{center}
+    \begin{tikzpicture}[
+        -,
+        >=stealth',
+        node distance=2.4cm,
+        level distance=1.0cm,
+        sibling distance=1.1cm,
+        initial text=$ $,
+    ]
+        \node (s4) {cbr}
+            child {node {$>$}
+                child {node {ldr A}}
+                child {node {ldr B}}
+            }
+        ;
+        \node[right of=s4] (s5) {str}
+            child {node {B}}
+            child {node {ldr}
+                child {node {A}}
+            }
+        ;
+        \node[right of=s5] (s6) {...};
+
+        \draw[->, line width=1.5pt]
+                (s4)	edge[below] node{yes}    (s5)
+                (s4)	edge[above left, bend left] node{no}    (s6)
+                (s5)	edge    (s6)
+                ;
+    \end{tikzpicture}
+\end{center}
+
+\question
+In the context of liveness analysis, and based on the dataflow analysis equations that are responsible to propagate information between nodes, present modifications to the dataflow analysis iterative algorithm(maintaining the input CFG) that may make it faster.
+
+\ansseparator
+
+\noindent
+The liveness analysis iterative algorithm uses two fundamental equations to update the $in$ and $out$ sets:
+
+\begin{alignat}{2}
+    & in [n] && \leftarrow use[n] \cup (out[n] - def[n]) \label{eq:2019R_1} \\
+    & out[n] && \leftarrow \bigcup_{s \in succ[n]}{in[s]} \label{eq:2019R_2}
+\end{alignat}
+
+Instead of computing the $in$ and $out$ sets in a forward way (i.e., doing first \ref{eq:2019R_1} and then \ref{eq:2019R_2}), we can compute them in a backward way (i.e., doing first \ref{eq:2019R_2} and then \ref{eq:2019R_1}). This saves iterations, because liveness analysis is essentially a backward problem.
+
+\question
+Consider the interference graph (IG) presented below. Indicate a possible allocation of registers using the graph coloring based register allocation algorithm presented in the lectures and considering a maximum of 3 registers (R1, R2, and R3). Show the steps performed and the content of the stack after the complete simplification of the IG. In the case of having to perform spilling, use the degree of the nodes to decide. In the case of having to perform coalescing, indicate the heuristic used and why you coalesce or freeze. Show the result of the first iteration of the register allocation algorithm (i.e., without repeating the process).
+
+\begin{center}
+    \small
+    \begin{tikzpicture}[
+        -,
+        >=stealth',
+        node distance=5em,
+        initial text=$ $,
+    ]
+        \node[state                 ] (a) {a};
+        \node[state, right of=a     ] (b) {b};
+        \node[state, above of=a     ] (c) {c};
+        \node[state, below of=a     ] (d) {d};
+        \node[state, below of=b     ] (e) {e};
+        \node[state, left  of=c     ] (i) {i};
+        \node[state, left  of=i     ] (h) {h};
+        \node[state, above of=h     ] (f) {f};
+        \node[state, above of=i     ] (g) {g};
+        \draw
+            (a)	edge (b)
+            (a)	edge (c)
+            (a)	edge (d)
+            (b) edge (d)
+            (b) edge (e)
+            (c) edge (f)
+            (c) edge (g)
+            (c) edge (i)
+            (d) edge (e)
+            (f) edge (i)
+            (g) edge (i)
+            (h) edge (i)
+        ;
+
+        \draw[dashed]
+        (a) edge (e)
+        (a) edge (i)
+        (b) edge (c)
+        (d) edge (i)
+        (f) edge (g)
+        (f) edge (h)
+        ;
+    \end{tikzpicture}
+\end{center}
+
+\ansseparator
+
+\noindent
+When coalescing, we will coalesce the variables that will originate a node with degree less than or equal to $K$ ($K=3$ in this case), and in case of a tie we will choose the coalescing that originates the node with the least degree; if even then there is a tie, we will choose the coalescing which has a symbol that appears first in lexicographical order.
+
+When freezing, we will freeze the move that will cause one of the nodes to have the least degree possible; in case of a tie we choose the move that will cause the second node to have the least degree possible; in case of a tie we choose the lexicographically smaller pair.
+
+\begin{multicols}{2}
+    \begin{enumerate}[noitemsep]
+        \item Cannot simplify, coalesce
+        \item Coalescing f-g, simplify
+        \item Cannot simplify, coalesce
+        \item Coalescing f-g-h, simplify
+        \item Simplifying f-g-h
+        \item Cannot simplify, coalesce
+        \item Cannot coalesce, because potential nodes are a-e (4), a-i (4), b-c (4), d-i (4); freeze
+        \item Freezing b-c, simplify
+        \item Simplifying c
+        \item Cannot simplify, coalesce
+        \item Coalescing a-e, simplify
+        \item Simplify b
+        \item Cannot simplify, coalesce
+        \item Coalescing a-e-i, simplify
+        \item Simplifying a-e-i
+        \item Simplifying d
+    \end{enumerate}
+\end{multicols}
+
+\noindent
+\begin{minipage}{0.25\textwidth}
+    \begin{center}
+        \begin{tabular}{| c |}
+            \textbf{Stack top} \\ \hline
+            d \\
+            a-e-i \\
+            b \\
+            c \\
+            f-g-h \\ \hline
+            \textbf{Stack bottom}
+        \end{tabular}
+    \end{center}
+\end{minipage}
+\begin{minipage}{0.17\textwidth}
+    R1 = \{c, d\} \\
+    R2 = \{a, e, i\} \\
+    R3 = \{b, f, g, h\}
+\end{minipage}
+\begin{minipage}{0.56\textwidth}
+\begin{center}
+    \small
+    \begin{tikzpicture}[
+        -,
+        >=stealth',
+        node distance=5em,
+        initial text=$ $,
+    ]
+        \node[state            , fill=green!30  ] (a) {a};
+        \node[state, right of=a, fill=blue!30   ] (b) {b};
+        \node[state, above of=a, fill=red!30    ] (c) {c};
+        \node[state, below of=a, fill=red!30    ] (d) {d};
+        \node[state, below of=b, fill=green!30  ] (e) {e};
+        \node[state, left  of=c, fill=green!30  ] (i) {i};
+        \node[state, left  of=i, fill=blue!30   ] (h) {h};
+        \node[state, above of=h, fill=blue!30   ] (f) {f};
+        \node[state, above of=i, fill=blue!30   ] (g) {g};
+        \draw
+            (a)	edge (b)
+            (a)	edge (c)
+            (a)	edge (d)
+            (b) edge (d)
+            (b) edge (e)
+            (c) edge (f)
+            (c) edge (g)
+            (c) edge (i)
+            (d) edge (e)
+            (f) edge (i)
+            (g) edge (i)
+            (h) edge (i)
+        ;
+
+        \draw[dashed]
+        (a) edge (e)
+        (a) edge (i)
+        (b) edge (c)
+        (d) edge (i)
+        (f) edge (g)
+        (f) edge (h)
+        ;
+    \end{tikzpicture}
+\end{center}
+\end{minipage}
 
 \examgroup{}
 
-TODO
+\question
+Considering the liveness analysis using dataflow analysis, members of a compiler team suggested the following two options:
+
+\begin{enumerate}[label=(\alph*)]
+    \item merging CFG nodes that have a single predecessor and a single successor into a new node;
+    \item instead of computing dataflow information for all variables at once using sets, compute the analysis for each variable separately.
+\end{enumerate}
+
+Comment on these two options and explain why you think each of the options might make sense and be advantageous or not.
+
+\ansseparator
+
+\noindent
+Both methods intend to perform dataflow and liveness analysis in a more efficient way.
+
+Option (a) has the advantage of coalescing several CFG nodes into one large, sequential block of code (node), which may speed up liveness analysis, because it reduces the number of nodes in the CFG, and each new node only requires one iteration of the dataflow algorithm.
+
+Option (b) has the advantage of reducing the maximum required memory (because not all sets need to be stored simultaneously) and also reduces the global number of operations. However, it needs to repeat the dataflow algorithm once for each variable.
 
 \end{document}

@@ -63,6 +63,8 @@
 \renewcommand\qedsymbol{$\blacksquare$}
 \theoremstyle{remark}
 \newtheorem*{remark}{Remark}
+% Two columns
+\usepackage{multicol}
 % Zero-padding
 \RequirePackage{fmtcount}
 % Copyright page
@@ -114,3 +116,25 @@
 \newcommand\examgroup[1]{\section{#1}}
 \newcommand\question[0]{\subsection{}}
 \newcommand\questionitem[1]{\subsubsection{#1}}
+
+
+
+
+\let\origthelstnumber\thelstnumber
+\makeatletter
+\newcommand*\Suppressnumber{%
+  \lst@AddToHook{OnNewLine}{%
+    \let\thelstnumber\relax%
+  }%
+}
+\newcommand*\Reactivatenumber{%
+  \lst@AddToHook{OnNewLine}{%
+   \let\thelstnumber\origthelstnumber%
+  }%
+}
+
+\let\orig@lstnumber=\thelstnumber
+
+\newcommand\lstsetnumber[1]{\gdef\thelstnumber{#1}}
+\newcommand\lstresetnumber{\global\let\thelstnumber=\orig@lstnumber}
+\makeatother
