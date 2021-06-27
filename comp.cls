@@ -11,6 +11,9 @@
 \RequirePackage{tikz}
 \RequirePackage{tikz-qtree}
 \usetikzlibrary{automata, positioning, arrows}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{shapes.misc}
 % Encodings (to render letters with diacritics and special characters)
 \RequirePackage[utf8]{inputenc}
 \DeclareUnicodeCharacter{2205}{$\emptyset$}
