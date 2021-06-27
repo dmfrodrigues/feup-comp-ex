@@ -201,7 +201,9 @@ In practice, the left recursion is not a problem for LL(k) as we can always defi
 
 \ansseparator
 
-TODO
+False. Consider a language that can possibly have several functions, and that these functions are detected by the grammar using left recursion. Consider also that we are using a descendent syntactic analyser. Even if we choose an arbitrarily large value for $k$, we can always devise a new string with at least $k+1$ functions that the parser will struggle with.
+
+Plus, left recursion may lead to infinite loops because the parser will apply the same production several times without ever checking if it matches the string to be matched.
 
 \newpage
 
