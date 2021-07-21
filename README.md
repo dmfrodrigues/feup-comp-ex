@@ -7,7 +7,7 @@
 - **Subjects:** Compiler design, lexical analysis, syntactic analysis, semantic analysis, optimizations
 - **Environment:** JVM
 - **Tools:** Java, Jasmin
-- **Course grade:** ?/20
+- **Course grade:** 17/20
 
 ## Contents
 
